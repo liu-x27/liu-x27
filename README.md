@@ -66,8 +66,9 @@ the README rather than quietly dropped.
 #### [lexica](https://github.com/liu-x27/lexica) · JavaScript · Electron · Kotlin
 
 A 3.4-million-entry offline dictionary and a real-time lecture captioner, both running
-with the network cable pulled out. One source tree builds for Windows and Android, with a
-byte-equality test holding the shared renderer in place.
+with the network cable pulled out. One source tree ships to Windows and Android — a
+CommonJS shim and a Kotlin SQL bridge let the dictionary, wordbook and quiz modules run
+unmodified in a WebView, with a byte-equality test holding the shared renderer in place.
 
 **Speech recognition went from 0.58× to 4.0× real time**, which is the difference
 between captions that keep up with a lecture and captions that fall behind it.
