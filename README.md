@@ -20,7 +20,7 @@ lecture captioner I use daily.
 ### What that looks like in practice
 
 An agent asking permission for every shell command trains you to turn permissions off.
-So a small model scores each call first, and only the ones that earn it reach you:
+So a small model scores each call first: low-scoring ones run, the rest still ask you:
 
 ```
 › Run exactly: wc -l src/agent.ts
@@ -47,9 +47,9 @@ On top of it, a decision layer that answers the agent's own control-flow questio
 number the model did not choose — the probability mass over two label tokens, read out of
 the logprobs — instead of prose. That is the risk gate above, plus a model router that
 picks a cheap or a strong tier per request. The scores are not calibrated and are not
-claimed to be; they are ordered well enough to put a threshold on, which is all the gate
-needs. Every backend failure path resolves to the safe side: a judge that times out gets
-you asked, not obeyed.
+claimed to be — the gate thresholds them, and the held-out runs report both sides: safe
+commands cleared, and unsafe ones auto-approved. Every backend failure resolves to the
+safe side: a judge that times out gets you asked, not obeyed.
 
 **On the newest held-out set it cleared 26 of 77 safe commands and allowed 0 of 76 unsafe
 ones.** An earlier held-out set has one false allow, and the README prints that row too.
@@ -72,16 +72,10 @@ captions that keep up with a lecture and captions that fall behind it.
 Role-based text annotation with local LLM pre-labelling and a multi-round review queue.
 It holds 14 tasks and 94,469 samples, of which **3,063 went through the review queue by
 hand**; model pre-labels are stored as a separate source and never merged into the human
-ones. One person did the annotating, and the README says so rather than implying a crowd.
-
-#### A distillation post-mortem · Python · PyTorch
-
-A knowledge-distillation pipeline, and an account of the ways it produced confident wrong
-numbers without ever raising an error. Private until the paper it belongs to clears
-review; happy to walk through it.
+ones. Used by one annotator, which the README states rather than leaving to be inferred.
 
 ---
 
-TypeScript · Python · Java · React · Node · Electron · PyTorch · MongoDB
+TypeScript · JavaScript · Python · React · Node · Electron · Kotlin · MongoDB
 
 Reach me at `liu.x27@northeastern.edu`.
