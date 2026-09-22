@@ -2,17 +2,18 @@
 
 M.S. Software Engineering Systems at **Northeastern University**, Arlington VA
 (Dec 2028). B.Eng. Software Engineering, **Xi'an Jiaotong University**.
-Looking for a **Summer 2027 / Fall 2027 SWE internship or co-op** — DC metro or remote.
+Looking for a **Summer 2027 SWE internship** — DC metro or remote. A Fall 2027 co-op
+works too.
 
 Most of what I build ends up being about the same thing: **systems that fail without
 raising.** A dictionary that silently outranks real words with typos. A decoder that
-loops forever instead of erroring. A research pipeline that reported a 12-point
-improvement it had memorised. A safety gate that goes on reporting success after the
-component it depends on has quietly stopped answering.
+loops forever instead of erroring. A safety gate that goes on reporting success after
+the component it depends on has quietly stopped answering.
 
-Noticing is half of it. The other half is measuring whether the fix worked, on data
-chosen before the fix existed — which is usually where the flattering number turns out
-to have been about the test set.
+Start with **[mini-claude-code](https://github.com/liu-x27/mini-claude-code)** — an agent
+framework whose shell approvals are scored by a small model and measured on held-out
+commands — or **[lexica](https://github.com/liu-x27/lexica)**, an offline dictionary and
+lecture captioner I use daily.
 
 ---
 
@@ -32,9 +33,6 @@ So a small model scores each call first, and only the ones that earn it reach yo
   ⚠ Permission required for Bash
 ```
 
-The web UI does the same thing with a pill on each tool call, which is the only trace
-the gate leaves when it works — an absence is not something anyone notices.
-
 ---
 
 ### Projects
@@ -45,26 +43,19 @@ A small, readable agent framework on the Claude API — agentic loop, 7 tools, p
 session persistence, driven from a REPL, a web UI or as a library. Building the REPL is
 what exposed three design faults in the framework underneath it.
 
-On top of it, a decision layer that answers the agent's own control-flow questions with
-a number the model did not choose — the probability mass over two label tokens, read out
-of the logprobs — instead of prose. That is the risk gate above, plus a model router that
+On top of it, a decision layer that answers the agent's own control-flow questions with a
+number the model did not choose — the probability mass over two label tokens, read out of
+the logprobs — instead of prose. That is the risk gate above, plus a model router that
 picks a cheap or a strong tier per request. The scores are not calibrated and are not
 claimed to be; they are ordered well enough to put a threshold on, which is all the gate
-needs. Every failure path in both resolves to the
-safe side — a judge that times out gets you asked, not obeyed.
+needs. Every backend failure path resolves to the safe side: a judge that times out gets
+you asked, not obeyed.
 
-**Zero false allows on a 153-command set it had never seen.** Measured on 457 hand-labelled
-commands and 105 requests across six sets, with the held-out column printed beside the
-tuned one — including the router's, which is four times worse out of sample and says so.
-
-#### [llm-distill-study](https://github.com/liu-x27/llm-distill-study) · Python · PyTorch
-
-A knowledge-distillation pipeline and a post-mortem of the seven ways it produced
-confident wrong numbers without ever raising an error.
-
-**An unchecked `done_reason == "length"` inverted a teacher-scale comparison**, and a
-test-set leak inflated an accuracy by 12.46 points. Both conclusions are retracted in
-the README rather than quietly dropped.
+**On the newest held-out set it cleared 26 of 77 safe commands and allowed 0 of 76 unsafe
+ones.** An earlier held-out set has one false allow, and the README prints that row too.
+Measured across 457 hand-labelled commands and 105 requests over six sets, with the
+held-out column beside the tuned one — including the router's, which is four times worse
+out of sample and says so.
 
 #### [lexica](https://github.com/liu-x27/lexica) · JavaScript · Electron · Kotlin
 
@@ -73,15 +64,21 @@ with the network cable pulled out. One source tree ships to Windows and Android 
 CommonJS shim and a Kotlin SQL bridge let the dictionary, wordbook and quiz modules run
 unmodified in a WebView, with a byte-equality test holding the shared renderer in place.
 
-**Speech recognition went from 0.58× to 4.0× real time**, which is the difference
-between captions that keep up with a lecture and captions that fall behind it.
+**Audio processing went from 0.58× to 4.0× real time**, which is the difference between
+captions that keep up with a lecture and captions that fall behind it.
 
 #### [crowd-annotation-platform](https://github.com/liu-x27/crowd-annotation-platform) · React · Node · MongoDB
 
 Role-based text annotation with local LLM pre-labelling and a multi-round review queue.
-It produced the corpora behind the distillation study, storing human and model labels as
-separate sources — which is the correct behaviour, and is what made the downstream
-split's leak possible to find and to localise.
+It holds 14 tasks and 94,469 samples, of which **3,063 went through the review queue by
+hand**; model pre-labels are stored as a separate source and never merged into the human
+ones. One person did the annotating, and the README says so rather than implying a crowd.
+
+#### A distillation post-mortem · Python · PyTorch
+
+A knowledge-distillation pipeline, and an account of the ways it produced confident wrong
+numbers without ever raising an error. Private until the paper it belongs to clears
+review; happy to walk through it.
 
 ---
 
