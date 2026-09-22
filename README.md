@@ -46,8 +46,11 @@ session persistence, driven from a REPL, a web UI or as a library. Building the 
 what exposed three design faults in the framework underneath it.
 
 On top of it, a decision layer that answers the agent's own control-flow questions with
-calibrated probabilities instead of prose: the risk gate above, and a model router that
-picks a cheap or a strong tier per request. Every failure path in both resolves to the
+a number the model did not choose — the probability mass over two label tokens, read out
+of the logprobs — instead of prose. That is the risk gate above, plus a model router that
+picks a cheap or a strong tier per request. The scores are not calibrated and are not
+claimed to be; they are ordered well enough to put a threshold on, which is all the gate
+needs. Every failure path in both resolves to the
 safe side — a judge that times out gets you asked, not obeyed.
 
 **Zero false allows on a 153-command set it had never seen.** Measured on 457 hand-labelled
@@ -75,9 +78,10 @@ between captions that keep up with a lecture and captions that fall behind it.
 
 #### [crowd-annotation-platform](https://github.com/liu-x27/crowd-annotation-platform) · React · Node · MongoDB
 
-Role-based crowdsourced text annotation with local LLM pre-labelling and a multi-round
-review queue. The upstream half of the distillation study — it produced the corpora that
-study then found the leak in.
+Role-based text annotation with local LLM pre-labelling and a multi-round review queue.
+It produced the corpora behind the distillation study, storing human and model labels as
+separate sources — which is the correct behaviour, and is what made the downstream
+split's leak possible to find and to localise.
 
 ---
 
