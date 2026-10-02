@@ -67,16 +67,24 @@ its README called reviewed one at a time were made at a human pace.
 
 </td>
 </tr>
-</table>
+<tr>
+<td colspan="2" valign="top">
 
-#### [spire-jev](https://github.com/liu-x27/spire-jev) · TypeScript
+<a href="https://liu-x27.github.io/spire-jev/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://liu-x27.github.io/spire-jev/brand/lockup-dark.svg"><img alt="spire-jev" src="https://liu-x27.github.io/spire-jev/brand/lockup-light.svg" height="50"></picture></a>
 
+**A narrow win, not a win rate.**
 A bot that plays Slay the Spire 2 in the real game: all five characters, whole runs, no
 human input. A simulator of the game's combat, checked against the game card by card,
-searches each turn in well under a millisecond at the median. It has won at Ascension 10,
-narrowly and not as a win rate: the Regent from floor 1 on 1 of 20 fresh seeds. Players
-can run it inside their own game from the Steam Workshop
+searches each turn in well under a millisecond at the median. It has won twice at
+Ascension 10, and **0 of 90** on the seeds no change was tuned on; its pages say both.
+Players can run it inside their own game from the Steam Workshop
 ([Jev 自动爬塔](https://steamcommunity.com/sharedfiles/filedetails/?id=3808798192)).
+
+[Project page](https://liu-x27.github.io/spire-jev/) · [Code](https://github.com/liu-x27/spire-jev) · TypeScript · C# · Steam Workshop
+
+</td>
+</tr>
+</table>
 
 ---
 
