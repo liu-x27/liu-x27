@@ -7,75 +7,82 @@ works too.
 
 Most of what I build ends up being about the same thing: **systems that fail without
 raising.** A dictionary that silently outranks real words with typos. A decoder that
-loops forever instead of erroring. A safety gate that goes on reporting success after
-the component it depends on has quietly stopped answering.
+loops forever instead of erroring. A labelling tool that saves a failed model call as a
+label. A safety gate that goes on reporting success after the component it depends on
+has quietly stopped answering.
 
-Start with **[mini-claude-code](https://github.com/liu-x27/mini-claude-code)** — an agent
-framework whose shell approvals are scored by a small model and measured on held-out
-commands — or **[lexica](https://github.com/liu-x27/lexica)**, an offline dictionary and
-lecture captioner I use daily.
+Each project below has a page that tells its story in a few minutes, and a README that
+says what was measured, on what, and what was not tested.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+<a href="https://liu-x27.github.io/mini-claude-code/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://liu-x27.github.io/mini-claude-code/brand/lockup-dark.svg"><img alt="mini-claude-code" src="https://liu-x27.github.io/mini-claude-code/brand/lockup-light.svg" height="50"></picture></a>
+
+**Doesn't ask about `wc -l`. Does ask about `rm -rf`.**
+A readable coding-agent harness on the Claude API, whose risk gate asks a local model
+four narrow questions about each shell command. On 153 commands it had never seen:
+**0 of 76 unsafe ones cleared**, 38% of the safe ones run without a prompt.
+
+[Project page](https://liu-x27.github.io/mini-claude-code/) · [Code](https://github.com/liu-x27/mini-claude-code) · TypeScript · MCP · ACP
+
+</td>
+<td width="50%" valign="top">
+
+<a href="https://liu-x27.github.io/XavierJev/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://liu-x27.github.io/XavierJev/brand/lockup-dark.svg"><img alt="XavierJev" src="https://liu-x27.github.io/XavierJev/brand/lockup-light.svg" height="36"></picture></a>
+
+**Ask for `Y` or `N`. Read the ratio, not the prose.**
+The decision layer behind that gate, as its own library: yes/no, one-of-*n* and rubric
+questions read off one token's probabilities. Of the 1,181 real commands it cleared,
+every one read by hand, **6 should have been asked**.
+
+[Project page](https://liu-x27.github.io/XavierJev/) · [Code](https://github.com/liu-x27/XavierJev) · TypeScript · Claude Code plugin
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+<a href="https://liu-x27.github.io/lexica/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://liu-x27.github.io/lexica/brand/lockup-dark.svg"><img alt="Lexica" src="https://liu-x27.github.io/lexica/brand/lockup-light.svg" height="38"></picture></a>
+
+**`recieve` still resolves. It just ranks below `receive`.**
+A 3.4-million-entry offline English–Chinese dictionary and a lecture captioner I use
+daily, on Windows and Android from one source tree. One rule ranks down the
+**3.24 million entries no source vouches for**; captions run at 9.1× real time.
+
+[Project page](https://liu-x27.github.io/lexica/) · [Code](https://github.com/liu-x27/lexica) · Electron · SQLite · whisper.cpp · Kotlin
+
+</td>
+<td width="50%" valign="top">
+
+<a href="https://liu-x27.github.io/crowd-annotation-platform/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://liu-x27.github.io/crowd-annotation-platform/brand/lockup-dark.svg"><img alt="Crowd Annotation" src="https://liu-x27.github.io/crowd-annotation-platform/brand/lockup-light.svg" height="46"></picture></a>
+
+**Label with a model. Keep what it said separate.**
+A text annotation platform where model drafts are stored apart from human labels.
+Rewritten after migrating v1's own database showed that **only 91 of the 3,063 labels**
+its README called reviewed one at a time were made at a human pace.
+
+[Project page](https://liu-x27.github.io/crowd-annotation-platform/) · [Code](https://github.com/liu-x27/crowd-annotation-platform) · TypeScript · Postgres · React
+
+</td>
+</tr>
+</table>
+
+#### [spire-jev](https://github.com/liu-x27/spire-jev) · TypeScript
+
+A bot that plays Slay the Spire 2 in the real game: all five characters, whole runs, no
+human input. A simulator of the game's combat, checked against the game card by card,
+searches each turn in well under a millisecond at the median. It has won at Ascension 10,
+narrowly and not as a win rate: the Regent from floor 1 on 1 of 20 fresh seeds. Players
+can run it inside their own game from the Steam Workshop
+([Jev 自动爬塔](https://steamcommunity.com/sharedfiles/filedetails/?id=3808798192)). Another
+Workshop mod of mine,
+[杀戮尖塔内鬼赛](https://steamcommunity.com/sharedfiles/filedetails/?id=3808769596), judges a
+friend's imposter-game rules automatically inside the game; the rules and tasks are his.
 
 ---
 
-### What that looks like in practice
-
-An agent asking permission for every shell command trains you to turn permissions off.
-So a small model scores each call first: low-scoring ones run, the rest still ask you:
-
-```
-› Run exactly: wc -l src/agent.ts
-  Risk gate allowed Bash — worst P=0.074 (exfiltrates) < 0.2
-  ⚙ Bash — wc -l src/agent.ts        ok in 88ms
-  506
-
-› Clean the build. Run exactly: rm -rf dist
-  Risk gate deferred Bash — P(destroys-data)=0.995 is not below 0.2
-  ⚠ Permission required for Bash
-```
-
----
-
-### Projects
-
-#### [mini-claude-code](https://github.com/liu-x27/mini-claude-code) · TypeScript
-
-A small, readable agent framework on the Claude API — agentic loop, 7 tools, permissions,
-session persistence, driven from a REPL, a web UI or as a library. Building the REPL is
-what exposed three design faults in the framework underneath it.
-
-On top of it, a decision layer that answers the agent's own control-flow questions with a
-number the model did not choose — the probability mass over two label tokens, read out of
-the logprobs — instead of prose. That is the risk gate above, plus a model router that
-picks a cheap or a strong tier per request. The scores are not calibrated and are not
-claimed to be — the gate thresholds them, and the held-out runs report both sides: safe
-commands cleared, and unsafe ones auto-approved. Every backend failure resolves to the
-safe side: a judge that times out gets you asked, not obeyed.
-
-**On the newest held-out set it cleared 26 of 77 safe commands and allowed 0 of 76 unsafe
-ones.** An earlier held-out set has one false allow, and the README prints that row too.
-Measured across 457 hand-labelled commands and 105 requests over six sets, with the
-held-out column beside the tuned one — including the router's, which is four times worse
-out of sample and says so.
-
-#### [lexica](https://github.com/liu-x27/lexica) · JavaScript · Electron · Kotlin
-
-A 3.4-million-entry offline dictionary and a real-time lecture captioner, both running
-with the network cable pulled out. One source tree ships to Windows and Android — a
-CommonJS shim and a Kotlin SQL bridge let the dictionary, wordbook and quiz modules run
-unmodified in a WebView, with a byte-equality test holding the shared renderer in place.
-
-**Audio processing went from 0.58× to 4.0× real time**, which is the difference between
-captions that keep up with a lecture and captions that fall behind it.
-
-#### [crowd-annotation-platform](https://github.com/liu-x27/crowd-annotation-platform) · React · Node · MongoDB
-
-Role-based text annotation with local LLM pre-labelling and a multi-round review queue.
-It holds 14 tasks and 94,469 samples, of which **3,063 went through the review queue by
-hand**; model pre-labels are stored as a separate source and never merged into the human
-ones. Used by one annotator, which the README states rather than leaving to be inferred.
-
----
-
-TypeScript · JavaScript · Python · React · Node · Electron · Kotlin · MongoDB
+TypeScript · JavaScript · Python · React · Node · Electron · Kotlin · PostgreSQL · SQLite
 
 Reach me at `liu.x27@northeastern.edu`.
