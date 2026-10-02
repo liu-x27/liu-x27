@@ -76,10 +76,7 @@ human input. A simulator of the game's combat, checked against the game card by 
 searches each turn in well under a millisecond at the median. It has won at Ascension 10,
 narrowly and not as a win rate: the Regent from floor 1 on 1 of 20 fresh seeds. Players
 can run it inside their own game from the Steam Workshop
-([Jev 自动爬塔](https://steamcommunity.com/sharedfiles/filedetails/?id=3808798192)). Another
-Workshop mod of mine,
-[杀戮尖塔内鬼赛](https://steamcommunity.com/sharedfiles/filedetails/?id=3808769596), judges a
-friend's imposter-game rules automatically inside the game; the rules and tasks are his.
+([Jev 自动爬塔](https://steamcommunity.com/sharedfiles/filedetails/?id=3808798192)).
 
 ---
 
