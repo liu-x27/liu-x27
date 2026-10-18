@@ -35,7 +35,7 @@ four narrow questions about each shell command. On 153 commands it had never see
 **Ask for `Y` or `N`. Read the ratio, not the prose.**
 The decision layer behind that gate, as its own library: yes/no, one-of-*n* and rubric
 questions read off one token's probabilities. Of the 1,181 real commands it cleared,
-every one read by hand, **6 should have been asked**.
+every one read one by one, **6 should have been asked**.
 
 [Project page](https://liu-x27.github.io/XavierJev/) · [Code](https://github.com/liu-x27/XavierJev) · TypeScript · Claude Code plugin
 
