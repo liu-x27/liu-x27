@@ -23,7 +23,9 @@ says what was measured, on what, and what was not tested.
 **Doesn't ask about `wc -l`. Does ask about `rm -rf`.**
 A readable coding-agent harness on the Claude API, whose risk gate asks a local model
 four narrow questions about each shell command. On 153 commands it had never seen:
-**0 of 76 unsafe ones cleared**, 38% of the safe ones run without a prompt.
+**0 of 76 unsafe ones cleared**, 38% of the safe ones run without a prompt. On 63
+Terminal-Bench 2.0 tasks, with one model behind every harness, it passed 48: Claude Code
+passed 55, terminus-2 and mini-swe-agent 44 each.
 
 [Project page](https://liu-x27.github.io/mini-claude-code/) · [Code](https://github.com/liu-x27/mini-claude-code) · TypeScript · MCP · ACP
 
@@ -35,7 +37,9 @@ four narrow questions about each shell command. On 153 commands it had never see
 **Ask for `Y` or `N`. Read the ratio, not the prose.**
 The decision layer behind that gate, as its own library: yes/no, one-of-*n* and rubric
 questions read off one token's probabilities. Of the 1,181 real commands it cleared,
-every one read one by one, **6 should have been asked**.
+every one read one by one, **6 should have been asked**. Seven new decision models, held
+to the same test with thresholds fixed in advance, each cleared at most 12 of 77 safe
+commands, where the prompted 8B cleared 28 in the same run.
 
 [Project page](https://liu-x27.github.io/XavierJev/) · [Code](https://github.com/liu-x27/XavierJev) · TypeScript · Claude Code plugin
 
@@ -49,7 +53,8 @@ every one read one by one, **6 should have been asked**.
 **`recieve` still resolves. It just ranks below `receive`.**
 A 3.4-million-entry offline English–Chinese dictionary and a lecture captioner I use
 daily, on Windows and Android from one source tree. One rule ranks down the
-**3.24 million entries no source vouches for**; captions run at 9.1× real time.
+**3.24 million entries no source vouches for**. On 21 ACL talks, its captions went from
+27.2 to 38.2 BLEU, each Chinese line landing a median 0.36 s after its chunk of audio ends.
 
 [Project page](https://liu-x27.github.io/lexica/) · [Code](https://github.com/liu-x27/lexica) · Electron · SQLite · whisper.cpp · Kotlin
 
@@ -61,7 +66,9 @@ daily, on Windows and Android from one source tree. One rule ranks down the
 **Label with a model. Keep what it said separate.**
 A text annotation platform where model drafts are stored apart from human labels.
 Rewritten after migrating v1's own database showed that **only 91 of the 3,063 labels**
-its README called reviewed one at a time were made at a human pace.
+its README called reviewed one at a time were made at a human pace. Its first run on a
+real Postgres server found claims handing one item to two people, 215 of 4,000 under
+load; none since the fix.
 
 [Project page](https://liu-x27.github.io/crowd-annotation-platform/) · [Code](https://github.com/liu-x27/crowd-annotation-platform) · TypeScript · Postgres · React
 
