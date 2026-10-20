@@ -23,10 +23,12 @@ says what was measured, on what, and what was not tested.
 **Doesn't ask about `wc -l`. Does ask about `rm -rf`.**
 A readable coding-agent harness on the Claude API, whose risk gate asks a local model
 four narrow questions about each shell command. On 153 commands it had never seen:
-**0 of 76 unsafe ones cleared**, 38% of the safe ones run without a prompt. On 63
-Terminal-Bench 2.0 tasks, with one model behind every harness, it passed 48: Claude Code
-passed 55, terminus-2 and mini-swe-agent 44 each. With the two faults that run exposed
-fixed, a rerun passed 51 of 62.
+**0 of 76 unsafe ones cleared**, 38% of the safe ones run without a prompt. With
+`--sandbox`, it runs Bash in Anthropic's sandbox-runtime or Microsoft's MXC instead of
+asking; escape tests pass 19 of 19 on Linux CI, 18 of 18 under MXC. On 63 Terminal-Bench
+2.0 tasks, with one model behind every harness, it passed 48: Claude Code passed 55,
+terminus-2 and mini-swe-agent 44 each. With the two faults that run exposed fixed, a
+rerun passed 51 of 62.
 
 [Project page](https://liu-x27.github.io/mini-claude-code/) · [Code](https://github.com/liu-x27/mini-claude-code) · TypeScript · MCP · ACP
 
