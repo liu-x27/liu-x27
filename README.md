@@ -54,9 +54,10 @@ commands, where the prompted 8B cleared 28 in the same run.
 A 3.4-million-entry offline English–Chinese dictionary and a lecture captioner I use
 daily, on Windows and Android from one source tree. One rule ranks down the
 **3.24 million entries no source vouches for**. On two hours of recorded ACL talks, its
-captions now get 8.0% of words wrong, down from 21.1%.
+captions now get 8.0% of words wrong, down from 21.1%, and with a GPU translate them at
+40.6 BLEU, up from 27.2.
 
-[Project page](https://liu-x27.github.io/lexica/) · [Code](https://github.com/liu-x27/lexica) · Electron · SQLite · Nemotron · whisper.cpp · Kotlin
+[Project page](https://liu-x27.github.io/lexica/) · [Code](https://github.com/liu-x27/lexica) · Electron · SQLite · Nemotron · Hy-MT2 · Kotlin
 
 </td>
 <td width="50%" valign="top">
